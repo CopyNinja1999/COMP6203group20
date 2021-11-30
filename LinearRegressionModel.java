@@ -28,11 +28,11 @@ public class LinearRegressionModel {
     public LinearRegressionModel(UserModel userModel) {
         this.userModel = userModel;
     }
-    public AbstractUtilitySpace LRalgorithm(){
-        AbstractUtilitySpace RandomSpace=getRandomChromosome();
-
-        return RandomSpace;
-    }
+//    public AbstractUtilitySpace LRalgorithm(){
+////        AbstractUtilitySpace RandomSpace=getRandomChromosome();
+//
+////        return RandomSpace;
+//    }
     public double ErrorFunction(AbstractUtilitySpace UtilitySpace){
         double score=0.0D;
         int NumRanking=bidRanking.getSize();
@@ -50,7 +50,7 @@ public class LinearRegressionModel {
         for(Bid bid:bidRanking){
         List<Issue> issues=bid.getIssues();
         for(Issue issue:issues){
-            values=
+//            values=
         }
 
         }

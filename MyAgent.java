@@ -20,7 +20,7 @@ import genius.core.uncertainty.BidRanking;
 import genius.core.uncertainty.ExperimentalUserModel;
 import genius.core.uncertainty.UserModel;
 import genius.core.utility.*;
-
+import group20.GeneticEstimatesUtility;
 /**
  * A simple example agent that makes random bids above a minimum target utility.
  *
@@ -44,7 +44,10 @@ public class MyAgent extends AbstractNegotiationParty
 	public void init(NegotiationInfo info)
 	{
 		super.init(info);
+
 		if (hasPreferenceUncertainty()) {
+			GeneticEstimatesUtility genetic=new GeneticEstimatesUtility(userModel);
+			AbstractUtilitySpace abstractUtilitySpace=genetic.geneticUtilitySpace();
 			BidRanking bidRanking = userModel.getBidRanking();
 			System.out.println("HAS PREFERENCE UNCERTAINTY!!!");
 			System.out.println("Agent ID: " + info.getAgentID());
