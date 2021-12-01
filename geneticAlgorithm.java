@@ -20,7 +20,7 @@ public class geneticAlgorithm {
 
     private List<AbstractUtilitySpace> population = new ArrayList<AbstractUtilitySpace>();  //用于存放所有的累加效用空间population
     private int popSize = 500;         //每一个population的总数
-    private int maxIterNum = 170;      //最大迭代的次数
+    private int maxIterNum = 3;      //最大迭代的次数
     private double mutationRate = 0.04;//变异几率
 
     //构造函数。实例该类的同时，必须得传入UserModel，这个东西可以帮助我们获得当前domain下我们需要的各种信息⚽️。
@@ -34,10 +34,10 @@ public class geneticAlgorithm {
             population.add(getRandomChromosome());  //此时种群里有2000个。后面会择优筛掉1500个
         }
 
-        //重复迭代maxiterNum次
+        //重复迭代maxiterNum次 170
         for(int num=0;num<maxIterNum;num++){
             List<Double> fitnessList=new ArrayList<>();
-
+//popu size=2000
             for(int i=0;i<population.size();i++){
                 fitnessList.add(getFitness(population.get(i)));
             }
@@ -78,20 +78,20 @@ public class geneticAlgorithm {
 
         //2.我们要单独写一个bidList去存放bidRanking去防止计算量过大。
         List<Bid> bidList =new ArrayList<>();
-
+        for(Bid bid:bidRanking) {bidList.add(bid);}
         //如果bid量小于400
-        if(bidRanking.getSize()<=400){
-            for(Bid bid:bidRanking){
-                bidList.add(bid);
-            }
-        }
-
-        //如果bid量在400和800之间
-        else if(bidRanking.getSize()>400&&bidRanking.getSize()<800){
-            for(int i=0;i<bidRanking.getSize();i+=2){
-                bidList.add(bidRankingStore.get(i));
-            }
-        }
+//        if(bidRanking.getSize()<=400){
+//            for(Bid bid:bidRanking){
+//                bidList.add(bid);
+//            }
+//        }
+//
+//        //如果bid量在400和800之间
+//        else if(bidRanking.getSize()>400&&bidRanking.getSize()<800){
+//            for(int i=0;i<bidRanking.getSize();i+=2){
+//                bidList.add(bidRankingStore.get(i));
+//            }
+//        }
 
 
         List<Double> utilityList=new ArrayList<>();
@@ -180,7 +180,7 @@ public class geneticAlgorithm {
         for(int i=0;i<eliteNumber;i++){
             sumFitness+=fitnessList.get(i);
         }
-
+//sum of elite fitness
         //轮盘赌算法
         for(int i=0;i<popSize-eliteNumber;i++){
             double randNum=random.nextDouble()*sumFitness;

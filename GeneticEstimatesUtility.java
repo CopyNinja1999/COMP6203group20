@@ -113,7 +113,7 @@ public class GeneticEstimatesUtility {
 			
 			index++;
 		}
-		System.out.println("OldOrder"+OldorderIndexHashMap.size());
+		System.out.println("OldOrder"+OldorderIndexHashMap.values());
 		//List <Double> newUtilityList = new ArrayList<>();
 		//for(Bid bid:bidOrder) {newUtilityList.add(abstractUtilitySpace.getUtility(bid));}
 		
@@ -140,7 +140,7 @@ public class GeneticEstimatesUtility {
 	        }
 		 
 	     double error = 0;
-	     System.out.println("Neworder"+newOrderIndexHashMap.values().size());
+	     System.out.println("Neworder"+newOrderIndexHashMap.values());
 	     for(int i = 0;i<bidOrder.size();i++) 
 	     {try{   	Bid bid =  bidOrder.get(i);
 			 double absGap =  Math.abs(OldorderIndexHashMap.get(bid)-newOrderIndexHashMap.get(bid));//nullpointerE
