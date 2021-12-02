@@ -18,12 +18,14 @@ import genius.core.issue.IssueDiscrete;
 import genius.core.issue.ValueDiscrete;
 import genius.core.parties.AbstractNegotiationParty;
 import genius.core.parties.NegotiationInfo;
+import genius.core.uncertainty.ExperimentalUserModel;
 import genius.core.utility.AbstractUtilitySpace;
 import genius.core.utility.AdditiveUtilitySpace;
 import genius.core.utility.EvaluatorDiscrete;
 import genius.core.uncertainty.BidRanking;
 import genius.core.uncertainty.UserModel;
 import genius.cli.Runner;
+import genius.core.utility.UncertainAdditiveUtilitySpace;
 import group20.LinearRegressionModel;
 /**
  * A simple example agent that makes random bids above a minimum target utility. 
@@ -45,8 +47,11 @@ public class MyAgent extends AbstractNegotiationParty
 	public void init(NegotiationInfo info) 
 	{
 		super.init(info);
-		estimateUtilitySpace();
+//		estimateUtilitySpace();
 		UserModel userModel=info.getUserModel();
+		ExperimentalUserModel ereal = (ExperimentalUserModel) userModel ;
+		UncertainAdditiveUtilitySpace realUSpace = ereal. getRealUtilitySpace();
+		printWeights(realUSpace);
 //		AbstractUtilitySpace utilitySpace = info.getUtilitySpace();
 //		AdditiveUtilitySpace additiveUtilitySpace = (AdditiveUtilitySpace) utilitySpace;
 //		geneticAlgorithm model=new geneticAlgorithm(userModel);
@@ -55,16 +60,17 @@ public class MyAgent extends AbstractNegotiationParty
 //		AbstractUtilitySpace userUtilitySpace =model.geneticUtilitySpace();
 //		LinearRegressionModel model=new LinearRegressionModel(userModel);
 //		AbstractUtilitySpace userUtilitySpace=model.LRalgorithm();
-		SimulatedAnnealingModel model=new SimulatedAnnealingModel(userModel);
-		AbstractUtilitySpace userUtilitySpace=model.simulatedAnnealingAlgorithm();
+//		SimulatedAnnealingModel model=new SimulatedAnnealingModel(userModel);
+//		AbstractUtilitySpace userUtilitySpace=model.simulatedAnnealingAlgorithm();
+		GeneticEstimatesUtility model=new GeneticEstimatesUtility(userModel);
+		AbstractUtilitySpace userUtilitySpace=model.geneticUtilitySpace();
 		AdditiveUtilitySpace additiveuserUtilitySpace = (AdditiveUtilitySpace) userUtilitySpace;
 //		double score= model.getFitness(userUtilitySpace);
 		List<Issue> issues = additiveuserUtilitySpace.getDomain().getIssues();
 //		System.out.println("utility fitness score="+score);
 		for (Issue issue : issues) {
 			int issueNumber = issue.getNumber();
-//			System.out.println(">> " + issue.getName() + " weight: " + additiveuserUtilitySpace.getWeight(issueNumber));
-
+			System.out.println(">> " + issue.getName() + " weight: " + additiveuserUtilitySpace.getWeight(issueNumber));
 			// Assuming that issues are discrete only
 			IssueDiscrete issueDiscrete = (IssueDiscrete) issue;
 			EvaluatorDiscrete evaluatorDiscrete = (EvaluatorDiscrete) additiveuserUtilitySpace.getEvaluator(issueNumber);
@@ -90,19 +96,27 @@ public class MyAgent extends AbstractNegotiationParty
 			concedeThreshold = (maxUtility + minUtility) / 2;
 			MINIMUM_TARGET = maxUtility;
 			if (hasPreferenceUncertainty()) {
-				System.out.println("Preference uncertainty is enabled.");
-				BidRanking bidRanking = userModel.getBidRanking();
-				System.out.println("The agent ID is:"+info.getAgentID());
-				System.out.println("Total number of possible bids:" +userModel.getDomain().getNumberOfPossibleBids());
-				System.out.println("The number of bids in the ranking is:" + bidRanking.getSize());
-				System.out.println("The lowest bid is:"+bidRanking.getMinimalBid());
-				System.out.println("The highest bid is:"+bidRanking.getMaximalBid());
-				System.out.println("The elicitation costs are:"+user.getElicitationCost());
-				List<Bid> bidList = bidRanking.getBidOrder();
-				System.out.println("The 5th bid in the ranking is:"+bidList.get(4));
+//				System.out.println("Preference uncertainty is enabled.");
+//				BidRanking bidRanking = userModel.getBidRanking();
+//				System.out.println("The agent ID is:"+info.getAgentID());
+//				System.out.println("Total number of possible bids:" +userModel.getDomain().getNumberOfPossibleBids());
+//				System.out.println("The number of bids in the ranking is:" + bidRanking.getSize());
+//				System.out.println("The lowest bid is:"+bidRanking.getMinimalBid());
+//				System.out.println("The highest bid is:"+bidRanking.getMaximalBid());
+//				System.out.println("The elicitation costs are:"+user.getElicitationCost());
+//				List<Bid> bidList = bidRanking.getBidOrder();
+//				System.out.println("The 5th bid in the ranking is:"+bidList.get(4));
 			}
 		}}
-	
+	public void printWeights(AbstractUtilitySpace utilitySpace){
+	List<Issue> issues =utilitySpace.getDomain().getIssues();
+	AdditiveUtilitySpace additiveuserUtilitySpace=(AdditiveUtilitySpace) utilitySpace;
+		for (Issue issue : issues) {
+			int issueNumber = issue.getNumber();
+			System.out.print("weight: " + additiveuserUtilitySpace.getWeight(issueNumber)+", ");
+
+		}
+	}
 
 	/**
 	 * Makes a random offer above the minimum utility target

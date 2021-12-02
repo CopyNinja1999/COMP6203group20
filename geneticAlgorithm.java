@@ -201,8 +201,6 @@ public class geneticAlgorithm {
         double wMother;
         double wUnion;
         double mutationStep=0.35;    //1. 变异最大步长 0.35
-
-
         AdditiveUtilitySpaceFactory additiveUtilitySpaceFactory=new AdditiveUtilitySpaceFactory(userModel.getDomain());
         List<IssueDiscrete> issuesList=additiveUtilitySpaceFactory.getIssues();
         for(IssueDiscrete i:issuesList){
